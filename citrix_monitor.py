@@ -11,8 +11,8 @@ PROCESS_NAME = "Citrix.DesktopViewer.App.exe"
 MISSING_THRESHOLD = 10
 ALERT_INTERVAL = 5  # секунд
 CUSTOM_SOUND = "sounds/alert.wav"
-ICON_GREEN = "icons/green.png"
-ICON_RED = "icons/red.png"
+ICON_OK = "icons/ok.png"
+ICON_FIRE = "icons/fire.png"
 
 stop_event = threading.Event()
 alerting = threading.Event()
@@ -60,13 +60,13 @@ def monitor_process():
         if is_running:
             missing_seconds = 0
             alerting.clear()
-            icon_queue.put(ICON_GREEN)  # Queue icon update
+            icon_queue.put(ICON_OK)  # Queue icon update
         else:
             missing_seconds += 1
             print(f"Missing for {missing_seconds} seconds")
             if missing_seconds >= MISSING_THRESHOLD:
                 alerting.set()
-                icon_queue.put(ICON_RED)  # Queue icon update
+                icon_queue.put(ICON_FIRE)  # Queue icon update
         time.sleep(1)
 
 
@@ -99,7 +99,7 @@ def on_exit(icon):
 
 def main():
     menu = Menu(MenuItem("Выход", lambda: on_exit(icon)))
-    default_icon = load_icon(ICON_GREEN)
+    default_icon = load_icon(ICON_FIRE)
 
     icon = Icon("Мониторинг Цитрикса", default_icon, menu=menu)
     icon.run(setup=setup)

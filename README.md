@@ -1,2 +1,2 @@
 # Building exe
-`pyinstaller --noconsole --onefile --add-data "sounds/alert.wav;sounds" --add-data "icons/green.png;icons" --add-data "icons/red.png;icons" citrix_monitor.py`
+`pyinstaller --noconsole --onefile --icon "icons/exe.ico" --name "Мониторинг Цитрикса" --add-data "sounds/alert.wav;sounds" --add-data "icons/ok.png;icons" --add-data "icons/fire.png;icons" citrix_monitor.py`
