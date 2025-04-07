@@ -7,7 +7,7 @@ import os
 from pystray import Icon, MenuItem, Menu
 from PIL import Image
 
-PROCESS_NAME = "Citrix.DesktopViewer.App.exe"
+PROCESS_NAMES = ["Citrix.DesktopViewer.App.exe", "CDViewer.exe"]
 MISSING_THRESHOLD = 10
 ALERT_INTERVAL = 5  # секунд
 CUSTOM_SOUND = "sounds/alert.wav"
@@ -34,8 +34,10 @@ def load_icon(path):
         return None
 
 
-def process_running(name):
-    return any(proc.info['name'] == name for proc in psutil.process_iter(['name']))
+def process_running(process_names):
+    # Check if any of the specified processes are running
+    running_processes = [proc.info['name'] for proc in psutil.process_iter(['name'])]
+    return any(name in running_processes for name in process_names)
 
 
 def alert_loop():
@@ -54,8 +56,8 @@ def alert_loop():
 def monitor_process():
     global missing_seconds
     while not stop_event.is_set():
-        is_running = process_running(PROCESS_NAME)
-        print(f"Process {PROCESS_NAME} running: {is_running}")
+        is_running = process_running(PROCESS_NAMES)
+        print(f"Processes {PROCESS_NAMES} running: {is_running}")
 
         if is_running:
             missing_seconds = 0
